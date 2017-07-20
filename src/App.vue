@@ -54,6 +54,8 @@
 
 <script>
     import Firebase from 'firebase' // 1 importing the firebase
+    
+    import toastr from 'toastr'
 
     // 2 create a config wich one can be downloaded from my firebase
     let config = {
@@ -94,9 +96,11 @@
                 this.newBook.title = "";
                 this.newBook.author = "";
                 this.newBook.url = "";
+                 toastr.success("Bookmark added")
             },
             remove:function(book){
                 booksRef.child(book['.key']).remove()
+                toastr.warning("Bookmark removed")
             }
         }
     }
