@@ -3,16 +3,25 @@
     <div class="pageHeader">
         <h1>Bookmarks App</h1>
     </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">
+    <div>
+        <div>
             <h3>Add new bookmark</h3>
         </div>
-        <div class="panel-body">
-            <form id="form" class="form-inline">
+        <div>
+            <form id="form" class="form-inline" v-on:submit.prevent = "addBookmark">
                 <div class="form-group">
                     <label for="bookTitle">Title:</label>
                     <input v-model="newBook.title" type="text" class="form-control" id="bookTitle">
                 </div>
+                <div class="form-group">
+                    <label for="bookAuthor">Author:</label>
+                    <input v-model="newBook.author" type="text" class="form-control" id="bookAuthor">
+                </div>
+                <div class="form-group">
+                    <label for="bookUrl">Url:</label>
+                    <input v-model="newBook.url" type="text" class="form-control" id="bookUrl">
+                </div>
+                <input type="submit" class="btn btn-primary" value="Add bookmark">
             </form>
         </div>
     </div>
@@ -26,12 +35,14 @@
                     <tr>
                         <th>Title</th>
                         <th>Author</th>
+                        <th>Remove</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="book in books">
                         <td><a v-bind:href="book.url">{{book.title}}</a></td>
                         <td>{{book.author}}</td>
+                        <td><span class="glyphicon glyphicon-remove" v-on:click="remove(book)"><i class="fa fa-trash-o" aria-hidden="true"></i></span></td>
                     </tr>
                     
                 </tbody>
@@ -75,6 +86,17 @@
                     author:"",
                     url:""
                 }
+            }
+        },
+        methods:{
+            addBookmark:function(){
+                booksRef.push(this.newBook);
+                this.newBook.title = "";
+                this.newBook.author = "";
+                this.newBook.url = "";
+            },
+            remove:function(book){
+                booksRef.child(book['.key']).remove()
             }
         }
     }
